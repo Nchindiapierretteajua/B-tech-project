@@ -1,74 +1,95 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Text, Card } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context"; // Recommended for handling notches/islands
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// Import your converted components
+import { SearchFilters } from "@/components/SearchFilters";
+import { FeaturedServices } from "@/components/FeaturedServices";
+import { useAppTheme } from "../_layout";
+
+// Placeholder for ServicesMap
+// const ServicesMapPlaceholder = () => (
+//     <Card style={styles.placeholderCard}>
+//         <Card.Title title="Map Area Placeholder" />
+//         <Card.Content>
+//             <Text>Services Map would be displayed here.</Text>
+//         </Card.Content>
+//     </Card>
+// );
 
 export default function HomeScreen() {
+  const {
+    colors: { background },
+  } = useAppTheme();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.flex1}>
+      {/* <Header /> */}
+      <ScrollView
+        style={[styles.container, { backgroundColor: background }]}
+        contentContainerStyle={styles.contentContainer}
+      >
+        {/* Hero Section */}
+        <Card
+          style={styles.heroCard}
+          theme={{ colors: { primary: "#F472B6" } }}
+        >
+          <Card.Content>
+            <Text variant="headlineLarge" style={styles.heroTitle}>
+              Find Services Easily
+            </Text>
+            <Text variant="titleMedium" style={styles.heroSubtitle}>
+              Your guide to essential community resources.
+            </Text>
+          </Card.Content>
+        </Card>
+
+        {/* Search Filters */}
+        <View style={styles.section}>
+          <SearchFilters />
+        </View>
+
+        {/* Featured Services Section */}
+        <View style={styles.section}>
+          <FeaturedServices />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  flex1: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    padding: 16, // Consistent padding
+  },
+  section: {
+    marginBottom: 24, // Space between sections
+  },
+  heroCard: {
+    marginBottom: 24,
+    backgroundColor: "#F472B6", // Example pink color
+  },
+  heroTitle: {
+    fontWeight: "bold",
+    color: "white",
     marginBottom: 8,
+    textAlign: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  heroSubtitle: {
+    color: "white",
+    textAlign: "center",
+  },
+  placeholderCard: {
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 150,
+    backgroundColor: "#e0e0e0",
   },
 });
