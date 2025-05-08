@@ -41,7 +41,8 @@ export function StatCard({ title, value, icon, color }: StatCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1, // Allow cards to grow in a row/grid
+    // flex: 1, // Allow cards to grow in a row/grid
+    width: "48%",
     minHeight: 120, // Ensure decent height
   },
   content: {

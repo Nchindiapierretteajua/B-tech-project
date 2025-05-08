@@ -1,51 +1,51 @@
 import { z } from "zod";
 
-const serviceSchema = z.object({
-  name: z.string().min(3, "Service name must be at least 3 characters"),
-  shortDescription: z
-    .string()
-    .min(10, "Short description must be at least 10 characters"),
-  description: z.string().min(50, "Description must be at least 50 characters"),
-  category: z.string().min(1, "Please select a category"),
-  address: z.string().min(5, "Address must be at least 5 characters"),
-  area: z.string().min(2, "Area must be at least 2 characters"),
-  phone: z.string().min(10, "Phone must be at least 10 characters"),
-  website: z.string().url("Please enter a valid URL").optional(),
-  hours: z.record(z.string(), z.string()),
-  requirements: z.array(z.string().min(1, "Requirement cannot be empty")),
-  tags: z.array(z.string().min(1, "Tag cannot be empty")),
-  accessibility: z.boolean(),
-  onlineAvailable: z.boolean(),
-  latitude: z.string().optional(),
-  longitude: z.string().optional(),
-  steps: z
-    .array(
-      z.object({
-        title: z.string().min(3, "Step title must be at least 3 characters"),
-        description: z
-          .string()
-          .min(10, "Step description must be at least 10 characters"),
-        tips: z.array(z.string()).optional(),
-        documents: z.array(z.string()).optional(),
-      })
-    )
-    .optional(),
-});
+// export const serviceSchema = z.object({
+//   name: z.string().min(3, "Service name must be at least 3 characters"),
+//   shortDescription: z
+//     .string()
+//     .min(10, "Short description must be at least 10 characters"),
+//   description: z.string().min(50, "Description must be at least 50 characters"),
+//   category: z.string().min(1, "Please select a category"),
+//   address: z.string().min(5, "Address must be at least 5 characters"),
+//   area: z.string().min(2, "Area must be at least 2 characters"),
+//   phone: z.string().min(10, "Phone must be at least 10 characters"),
+//   website: z.string().url("Please enter a valid URL").optional(),
+//   hours: z.record(z.string(), z.string()),
+//   requirements: z.array(z.string().min(1, "Requirement cannot be empty")),
+//   tags: z.array(z.string().min(1, "Tag cannot be empty")),
+//   accessibility: z.boolean(),
+//   onlineAvailable: z.boolean(),
+//   latitude: z.string().optional(),
+//   longitude: z.string().optional(),
+//   steps: z
+//     .array(
+//       z.object({
+//         title: z.string().min(3, "Step title must be at least 3 characters"),
+//         description: z
+//           .string()
+//           .min(10, "Step description must be at least 10 characters"),
+//         tips: z.array(z.string()).optional(),
+//         documents: z.array(z.string()).optional(),
+//       })
+//     )
+//     .optional(),
+// });
 
 // Cameroon phone number validation
 // Format: +237 6XXXXXXXX or 6XXXXXXXX
 const phoneRegex = /^(?:\+237)?[6-9][0-9]{8}$/;
 
-const registerSchema = z
+export const registerSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     phoneNumber: z
       .string()
       .regex(phoneRegex, "Please enter a valid Cameroon phone number"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z
       .string()
-      .min(6, "Confirm password must be at least 6 characters"),
+      .min(8, "Confirm password must be at least 8 characters"),
     role: z.enum(["citizen", "service-provider"]),
     ministry: z.string().optional(),
   })
@@ -57,7 +57,7 @@ const registerSchema = z
     (data) =>
       !(
         data.role === "service-provider" &&
-        (!data.ministry || data.ministry.length < 2)
+        (!data.ministry || data.ministry.trim().length < 2)
       ),
     {
       message: "Ministry name is required for service providers",
@@ -65,15 +65,15 @@ const registerSchema = z
     }
   );
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
   phoneNumber: z
     .string()
     .regex(phoneRegex, "Please enter a valid Cameroon phone number"),
-  password: z.string().min(1, "Password is required"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
   role: z.enum(["citizen", "service-provider"]),
 });
 
-const profileSchema = z.object({
+export const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   phoneNumber: z
     .string()
@@ -86,20 +86,20 @@ const profileSchema = z.object({
   address: z.string().optional().or(z.literal("")),
 });
 
-const searchSchema = z.object({
+export const searchSchema = z.object({
   query: z.string().optional(),
   location: z.string().min(2, "Please enter a valid location"),
   category: z.string().optional(),
 });
 
-const filterSchema = z.object({
+export const filterSchema = z.object({
   categories: z.array(z.string()).optional(),
   locations: z.array(z.string()).optional(),
   accessibility: z.boolean().optional(),
   onlineAvailable: z.boolean().optional(),
 });
 
-const quizSchema = z.object({
+export const quizSchema = z.object({
   title: z.string().min(3, "Quiz title must be at least 3 characters"),
   description: z.string().min(20, "Description must be at least 20 characters"),
   category: z.string().min(1, "Please select a category"),
@@ -133,28 +133,63 @@ const quizSchema = z.object({
     .min(1, "At least one question is required"),
 });
 
-const lessonSchema = z.object({
-  title: z.string().min(3, "Lesson title must be at least 3 characters"),
-  description: z.string().min(20, "Description must be at least 20 characters"),
-  category: z.string().min(1, "Please select a category"),
-  difficulty: z.string().min(1, "Please select a difficulty level"),
-  duration: z.string().min(1, "Please enter the estimated duration"),
-  points: z.number().min(1, "Points must be at least 1"),
+export const lessonSchema = z.object({
+  title: z.string().min(3, "Title required (min 3 chars)"),
+  description: z.string().min(20, "Description required (min 20 chars)"),
+  category: z.string().min(1, "Category is required"),
+  difficulty: z.string().min(1, "Difficulty is required"),
+  duration: z.string().min(1, "Duration is required"),
+  points: z.number().min(1, "Min 1 point").max(1000, "Max 1000 points"),
   badge: z.object({
-    name: z.string().min(2, "Badge name must be at least 2 characters"),
-    icon: z.string().min(1, "Please select an icon"),
-    description: z
-      .string()
-      .min(5, "Badge description must be at least 5 characters"),
+    name: z.string().min(2, "Badge name required (min 2 chars)"),
+    icon: z.string().min(1, "Badge icon required"),
+    description: z.string().min(5, "Badge description required (min 5 chars)"),
   }),
   steps: z
     .array(
       z.object({
-        title: z.string().min(3, "Step title must be at least 3 characters"),
-        content: z
-          .string()
-          .min(20, "Step content must be at least 20 characters"),
+        title: z.string().min(3, "Step title required (min 3 chars)"),
+        content: z.string().min(20, "Step content required (min 20 chars)"),
       })
     )
     .min(1, "At least one step is required"),
+});
+
+export const serviceSchema = z.object({
+  name: z.string().min(3, "Name required (min 3 chars)"),
+  shortDescription: z
+    .string()
+    .min(10, "Short description required (min 10 chars)"),
+  description: z.string().min(50, "Description required (min 50 chars)"),
+  category: z.string().min(1, "Category is required"),
+  address: z.string().min(5, "Address required (min 5 chars)"),
+  area: z.string().min(2, "Area/District required (min 2 chars)"),
+  phone: z.string().min(9, "Valid phone number required"), // Adjusted min length
+  website: z.string().url("Please enter a valid URL (e.g., https://...)"),
+  hours: z.record(
+    z.string(),
+    z.string().min(1, "Please enter hours or 'Closed'")
+  ), // Basic check
+  requirements: z
+    .array(z.string().min(1, "Requirement cannot be empty"))
+    .min(1, "At least one requirement needed"),
+  tags: z
+    .array(z.string().min(1, "Tag cannot be empty"))
+    .min(1, "At least one tag needed"),
+  accessibility: z.boolean(),
+  onlineAvailable: z.boolean(),
+  latitude: z.string().optional(), // Consider number/regex later
+  longitude: z.string().optional(),
+  steps: z
+    .array(
+      z.object({
+        title: z.string().min(3, "Step title required"),
+        description: z.string().min(10, "Step description required"),
+        tips: z.array(z.string().min(1, "Tip cannot be empty")).optional(), // Optional array of non-empty strings
+        documents: z
+          .array(z.string().min(1, "Document cannot be empty"))
+          .optional(),
+      })
+    )
+    .optional(), // Steps section is optional
 });

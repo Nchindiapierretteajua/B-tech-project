@@ -12,49 +12,12 @@ import {
   Searchbar,
 } from "react-native-paper";
 import { useAppTheme } from "@/app/_layout";
+import type { Lesson } from "@/lib/types";
+import { MOCK_PROVIDER_LESSONS } from "@/lib/mock-data";
 
 // Import reusable components
 import { LessonsTable } from "@/components/provider/LessonTable";
 
-// --- Mock Data ---
-type Lesson = {
-  id: string;
-  title: string;
-  category: string;
-  difficulty: string;
-  duration: string;
-  createdAt: string;
-  status: "Published" | "Draft" | string;
-};
-const MOCK_PROVIDER_LESSONS: Lesson[] = [
-  {
-    id: "national-id",
-    title: "How to Apply for a National ID Card",
-    category: "Documentation & ID",
-    difficulty: "Beginner",
-    duration: "15 min",
-    createdAt: "2023-10-15",
-    status: "Published",
-  },
-  {
-    id: "tax-registration",
-    title: "Tax Registration Process",
-    category: "Taxes & Finance",
-    difficulty: "Intermediate",
-    duration: "20 min",
-    createdAt: "2023-10-10",
-    status: "Draft",
-  },
-  {
-    id: "voting-rights",
-    title: "Understanding Your Voting Rights",
-    category: "Citizenship & Rights",
-    difficulty: "Beginner",
-    duration: "10 min",
-    createdAt: "2023-09-28",
-    status: "Published",
-  },
-];
 const fetchProviderLessons = async (): Promise<Lesson[]> => {
   await new Promise((r) => setTimeout(r, 400));
   return MOCK_PROVIDER_LESSONS;
@@ -63,7 +26,6 @@ const deleteLessonAPI = async (id: string): Promise<void> => {
   await new Promise((r) => setTimeout(r, 700));
   console.log("Deleted lesson:", id);
 };
-// --- End Mock Data ---
 
 export default function ProviderLessonsScreen() {
   const router = useRouter();
@@ -80,20 +42,20 @@ export default function ProviderLessonsScreen() {
 
   // --- Auth Check & Data Fetch ---
   useEffect(() => {
-    if (
-      isAuthenticated === false ||
-      (isAuthenticated && user?.role !== "service-provider")
-    ) {
-      router.replace("/(auth)");
-    } else if (isAuthenticated) {
-      const loadData = async () => {
-        setIsLoading(true);
-        const lessonsData = await fetchProviderLessons();
-        setLessons(lessonsData);
-        setIsLoading(false);
-      };
-      loadData();
-    }
+    // if (
+    //   isAuthenticated === false ||
+    //   (isAuthenticated && user?.role !== "service-provider")
+    // ) {
+    //   router.replace("/(auth)");
+    // } else if (isAuthenticated) {
+    const loadData = async () => {
+      setIsLoading(true);
+      const lessonsData = await fetchProviderLessons();
+      setLessons(lessonsData);
+      setIsLoading(false);
+    };
+    loadData();
+    // }
   }, [isAuthenticated, user, router]);
 
   // --- Filtering ---
@@ -120,13 +82,13 @@ export default function ProviderLessonsScreen() {
   };
 
   // --- Render Logic ---
-  if (!isAuthenticated || user?.role !== "service-provider") {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
-  }
+  // if (!isAuthenticated || user?.role !== "service-provider") {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator color={colors.primary} />
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView

@@ -163,11 +163,11 @@ export default function LessonScreen() {
       setCompleted(false);
       setIsLoading(false);
     };
-    if (isAuthenticated && lessonId) {
-      loadLesson();
-    } else if (!isAuthenticated) {
-      setIsLoading(false);
-    }
+    // if (isAuthenticated && lessonId) {
+    loadLesson();
+    // } else if (!isAuthenticated) {
+    //   setIsLoading(false);
+    // }
   }, [lessonId, isAuthenticated]);
 
   // --- Event Handlers (Keep as before, replace navigation) ---
@@ -200,19 +200,19 @@ export default function LessonScreen() {
   // Use router.back() instead of navigation.goBack()
   const navigateToLearn = () => router.push("/learn");
 
-  // --- Render Logic ---
-  if (!isAuthenticated)
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator />
-      </View>
-    ); // Placeholder during redirect
-  if (isLoading)
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  // // --- Render Logic ---
+  // if (!isAuthenticated)
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   ); // Placeholder during redirect
+  // if (isLoading)
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
 
   if (!lesson) {
     return (

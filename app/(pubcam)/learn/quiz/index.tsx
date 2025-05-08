@@ -11,60 +11,12 @@ import { useAppTheme } from "@/app/_layout";
 import { QuizCard } from "@/components/QuizCard";
 import { QuizFilterModal } from "@/components/QuizFilterModal";
 import { FilterControls } from "@/components/FilterControls";
-// --- Mock Data ---
-const MOCK_ALL_QUIZZES = [
-  // Ensure data structure matches QuizSummary interface in QuizCard
-  {
-    id: "citizenship-rights",
-    title: "Citizenship Rights Quiz",
-    category: "citizenship",
-    categoryName: "Citizenship & Rights",
-    difficulty: "Beginner",
-    questions: 10,
-    description: "Test your knowledge about citizen rights...",
-    completed: true,
-    score: 80,
-  },
-  {
-    id: "documentation-procedures",
-    title: "Documentation Procedures Quiz",
-    category: "documentation",
-    categoryName: "Documentation & ID",
-    difficulty: "Intermediate",
-    questions: 8,
-    description: "Test your knowledge about official document...",
-    completed: false,
-    score: null,
-  },
-  {
-    id: "tax-system",
-    title: "Tax System Quiz",
-    category: "taxes",
-    categoryName: "Taxes & Finance",
-    difficulty: "Advanced",
-    questions: 12,
-    description: "Test your understanding of the Cameroonian tax system...",
-    completed: false,
-    score: null,
-  },
-  // Add more...
-  {
-    id: "national-id",
-    title: "National ID Card Quiz",
-    category: "documentation",
-    categoryName: "Documentation & ID",
-    difficulty: "Beginner",
-    questions: 5,
-    description: "Test your knowledge about the National ID...",
-    completed: false,
-    score: null,
-  },
-];
+import { MOCK_ALL_QUIZZES } from "@/lib/mock-data";
+
 const fetchAllQuizzes = async (): Promise<any[]> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   return MOCK_ALL_QUIZZES;
 };
-// --- End Mock Data ---
 
 export default function AllQuizzesScreen() {
   const router = useRouter();
@@ -83,11 +35,11 @@ export default function AllQuizzesScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   // --- Auth Check ---
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.replace("/(auth)");
-    }
-  }, [isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (isAuthenticated === false) {
+  //     router.replace("/(auth)");
+  //   }
+  // }, [isAuthenticated, router]);
 
   // --- Fetch Quizzes ---
   useEffect(() => {
@@ -97,9 +49,9 @@ export default function AllQuizzesScreen() {
       setAllQuizzes(data);
       setIsLoading(false);
     };
-    if (isAuthenticated) {
-      loadQuizzes();
-    }
+    // if (isAuthenticated) {
+    loadQuizzes();
+    // }
   }, [isAuthenticated]);
 
   // --- Filtering ---
@@ -153,13 +105,13 @@ export default function AllQuizzesScreen() {
 
   const renderQuizItem = ({ item }: { item: any }) => <QuizCard quiz={item} />;
 
-  // --- Render ---
-  if (!isAuthenticated)
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
+  // // --- Render ---
+  // if (!isAuthenticated)
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator color={colors.primary} />
+  //     </View>
+  //   );
 
   return (
     <SafeAreaView
@@ -167,7 +119,6 @@ export default function AllQuizzesScreen() {
     >
       {/* Configure header in layout or here */}
       <Stack.Screen options={{ title: "All Quizzes" }} />
-      {/* <Header/> If not using layout header */}
 
       <View style={styles.container}>
         {/* Use the FilterControls component */}

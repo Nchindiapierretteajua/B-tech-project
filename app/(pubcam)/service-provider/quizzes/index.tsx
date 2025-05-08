@@ -15,46 +15,9 @@ import {
 import { useAppTheme } from "@/app/_layout"; // Corrected import path
 
 import { QuizzesTable } from "@/components/provider/QuizzesTable";
+import { MOCK_PROVIDER_QUIZZES } from "@/lib/mock-data";
+import { Quiz } from "@/lib/types";
 
-// --- Mock Data ---
-type Quiz = {
-  id: string;
-  title: string;
-  category: string;
-  difficulty: string;
-  questions: number;
-  createdAt: string;
-  status: "Published" | "Draft" | string;
-};
-const MOCK_PROVIDER_QUIZZES: Quiz[] = [
-  {
-    id: "national-id-quiz",
-    title: "National ID Card Quiz",
-    category: "Documentation & ID",
-    difficulty: "Beginner",
-    questions: 5,
-    createdAt: "2023-10-15",
-    status: "Published",
-  },
-  {
-    id: "tax-system-quiz",
-    title: "Tax System Quiz",
-    category: "Taxes & Finance",
-    difficulty: "Advanced",
-    questions: 12,
-    createdAt: "2023-10-10",
-    status: "Draft",
-  },
-  {
-    id: "citizenship-rights-quiz",
-    title: "Citizenship Rights Quiz",
-    category: "Citizenship & Rights",
-    difficulty: "Beginner",
-    questions: 10,
-    createdAt: "2023-09-28",
-    status: "Published",
-  },
-];
 const fetchProviderQuizzes = async (): Promise<Quiz[]> => {
   await new Promise((r) => setTimeout(r, 400));
   return MOCK_PROVIDER_QUIZZES;
@@ -63,7 +26,6 @@ const deleteQuizAPI = async (id: string): Promise<void> => {
   await new Promise((r) => setTimeout(r, 700));
   console.log("Deleted quiz:", id);
 };
-// --- End Mock Data ---
 
 export default function ProviderQuizzesScreen() {
   const router = useRouter();
@@ -82,20 +44,20 @@ export default function ProviderQuizzesScreen() {
 
   // --- Auth Check & Data Fetch ---
   useEffect(() => {
-    if (
-      isAuthenticated === false ||
-      (isAuthenticated && user?.role !== "service-provider")
-    ) {
-      router.replace("/(auth)");
-    } else if (isAuthenticated) {
-      const loadData = async () => {
-        setIsLoading(true);
-        const quizzesData = await fetchProviderQuizzes();
-        setQuizzes(quizzesData);
-        setIsLoading(false);
-      };
-      loadData();
-    }
+    // if (
+    //   isAuthenticated === false ||
+    //   (isAuthenticated && user?.role !== "service-provider")
+    // ) {
+    //   router.replace("/(auth)");
+    // } else if (isAuthenticated) {
+    const loadData = async () => {
+      setIsLoading(true);
+      const quizzesData = await fetchProviderQuizzes();
+      setQuizzes(quizzesData);
+      setIsLoading(false);
+    };
+    loadData();
+    // }
   }, [isAuthenticated, user, router]);
 
   // --- Filtering ---
@@ -127,14 +89,14 @@ export default function ProviderQuizzesScreen() {
     }
   };
 
-  // --- Render Logic ---
-  if (!isAuthenticated || user?.role !== "service-provider") {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
-  }
+  // // --- Render Logic ---
+  // if (!isAuthenticated || user?.role !== "service-provider") {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator color={colors.primary} />
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView

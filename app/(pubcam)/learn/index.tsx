@@ -20,9 +20,12 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { useAppTheme } from "@/app/_layout";
+import { CategoryCard } from "@/components/learn/CategoryCard";
+import { FeaturedLessonCard } from "@/components/learn/FeaturedLessonCard";
+import { FeaturedQuizCard } from "@/components/learn/FeaturedQuizCard";
 
 // --- Mock Data (Replace with API/Redux fetch) ---
-const MOCK_CATEGORIES = [
+export const MOCK_CATEGORIES = [
   {
     id: "citizenship",
     title: "Citizenship & Rights",
@@ -80,7 +83,7 @@ const MOCK_CATEGORIES = [
   },
 ];
 
-const MOCK_FEATURED_LESSONS = [
+export const MOCK_FEATURED_LESSONS = [
   {
     id: "national-id",
     title: "How to Apply for a National ID Card",
@@ -107,7 +110,7 @@ const MOCK_FEATURED_LESSONS = [
   },
 ];
 
-const MOCK_FEATURED_QUIZZES = [
+export const MOCK_FEATURED_QUIZZES = [
   {
     id: "citizenship-rights",
     title: "Citizenship Rights Quiz",
@@ -121,120 +124,6 @@ const MOCK_FEATURED_QUIZZES = [
     questionsCount: 8,
   },
 ];
-// --- End Mock Data ---
-
-// --- Reusable Components ---
-interface CategoryCardProps {
-  category: (typeof MOCK_CATEGORIES)[0];
-  onPress: () => void;
-}
-const CategoryCard = ({ category, onPress }: CategoryCardProps) => {
-  const {
-    colors: {
-      primaryContainer,
-      secondaryContainer,
-      errorContainer,
-      tertiaryContainer,
-    },
-  } = useAppTheme();
-  // Basic color mapping (adapt as needed)
-  const getBackgroundColor = (colorScheme: string | undefined) => {
-    switch (colorScheme) {
-      case "blue":
-        return primaryContainer;
-      case "green":
-        return tertiaryContainer;
-      case "yellow":
-        return "#FEF9C3"; // Lighter Yellow
-      case "red":
-        return errorContainer;
-      case "purple":
-        return "#F3E8FF"; // Lighter Purple
-      case "cyan":
-        return "#CFFAFE"; // Lighter Cyan
-      default:
-        return secondaryContainer;
-    }
-  };
-
-  return (
-    <Card
-      style={[
-        styles.categoryCard,
-        { backgroundColor: getBackgroundColor(category.colorScheme) },
-      ]}
-      onPress={onPress}
-      mode="contained"
-    >
-      <Card.Content>
-        <Avatar.Text
-          size={48}
-          label={category.icon}
-          style={styles.categoryIcon}
-        />
-        <Text
-          variant="titleLarge"
-          style={styles.categoryTitle}
-          numberOfLines={2}
-        >
-          {category.title}
-        </Text>
-        <Text
-          variant="bodyMedium"
-          style={styles.categoryDescription}
-          numberOfLines={3}
-        >
-          {category.description}
-        </Text>
-        <View style={styles.categoryMeta}>
-          <Chip icon="book-open-variant" compact>
-            {category.lessons} Lessons
-          </Chip>
-          <Chip icon="head-question-outline" compact>
-            {category.quizzes} Quizzes
-          </Chip>
-        </View>
-      </Card.Content>
-    </Card>
-  );
-};
-
-interface FeaturedLessonCardProps {
-  lesson: (typeof MOCK_FEATURED_LESSONS)[0];
-  onPress: () => void;
-}
-const FeaturedLessonCard = ({ lesson, onPress }: FeaturedLessonCardProps) => (
-  <Card style={styles.featuredCard} mode="outlined" onPress={onPress}>
-    <Card.Title
-      title={lesson.title}
-      subtitle={`${lesson.difficulty} · ${lesson.duration}`}
-      left={(props) => <List.Icon {...props} icon="book-open-variant" />}
-      titleNumberOfLines={2}
-    />
-    <Card.Actions>
-      <Button onPress={onPress}>Start Lesson</Button>
-    </Card.Actions>
-  </Card>
-);
-
-interface FeaturedQuizCardProps {
-  quiz: (typeof MOCK_FEATURED_QUIZZES)[0];
-  onPress: () => void;
-}
-const FeaturedQuizCard = ({ quiz, onPress }: FeaturedQuizCardProps) => (
-  <Card style={styles.featuredCard} mode="outlined" onPress={onPress}>
-    <Card.Title
-      title={quiz.title}
-      subtitle={`${quiz.questionsCount} Questions`}
-      left={(props) => <List.Icon {...props} icon="head-question-outline" />}
-      titleNumberOfLines={2}
-    />
-    <Card.Actions>
-      <Button onPress={onPress}>Take Quiz</Button>
-    </Card.Actions>
-  </Card>
-);
-// --- End Reusable Components ---
 
 export default function LearnScreen() {
   const router = useRouter();
@@ -269,10 +158,10 @@ export default function LearnScreen() {
     // router.push({ pathname: '/learn/lessons', params: { category: categoryId } });
   };
   const handleLessonPress = (lessonId: string) => {
-    router.push(`/learn/lesson/${lessonId}`);
+    router.push(`/(pubcam)/learn/lesson/${lessonId}`);
   };
   const handleQuizPress = (quizId: string) => {
-    router.push(`/learn/quiz/${quizId}`);
+    router.push(`/(pubcam)/learn/quiz/${quizId}`);
   };
   const viewAllLessons = () => router.push("/(pubcam)/learn/lesson");
   const viewAllQuizzes = () => router.push("/(pubcam)/learn/quiz");
@@ -297,15 +186,15 @@ export default function LearnScreen() {
               <Chip icon="head-question-outline" selected>
                 13 Quizzes
               </Chip>
-              <Chip icon="trophy-award" selected>
+              {/* <Chip icon="trophy-award" selected>
                 10 Badges
-              </Chip>
+              </Chip> */}
             </View>
           </Card.Content>
         </Card>
 
         {/* Categories Section */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text variant="headlineSmall" style={styles.sectionTitle}>
             Explore Categories
           </Text>
@@ -327,7 +216,7 @@ export default function LearnScreen() {
               columnWrapperStyle={styles.categoryRow}
             />
           )}
-        </View>
+        </View> */}
 
         {/* Featured Lessons Section */}
         <View style={styles.section}>
@@ -376,15 +265,29 @@ export default function LearnScreen() {
               {isLoading ? (
                 <ActivityIndicator />
               ) : (
-                <View style={styles.featuredQuizzesContainer}>
-                  {MOCK_FEATURED_QUIZZES.map((quiz) => (
+                // <View style={styles.featuredQuizzesContainer}>
+                //   {MOCK_FEATURED_QUIZZES.map((quiz) => (
+                //     <FeaturedQuizCard
+                //       key={quiz.id}
+                //       quiz={quiz}
+                //       onPress={() => handleQuizPress(quiz.id)}
+                //     />
+                //   ))}
+                // </View>
+                <FlatList
+                  data={MOCK_FEATURED_QUIZZES}
+                  renderItem={({ item }) => (
                     <FeaturedQuizCard
-                      key={quiz.id}
-                      quiz={quiz}
-                      onPress={() => handleQuizPress(quiz.id)}
+                      // lesson={item}
+                      quiz={item}
+                      onPress={() => handleQuizPress(item.id)}
                     />
-                  ))}
-                </View>
+                  )}
+                  keyExtractor={(item) => item.id}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.horizontalList}
+                />
               )}
             </Card.Content>
           </Card>
@@ -411,23 +314,11 @@ const styles = StyleSheet.create({
   },
   sectionTitle: { fontWeight: "bold" },
   categoryItemContainer: { flex: 0.5, padding: 6 }, // For 2 columns
+
   categoryRow: { justifyContent: "space-between" },
-  categoryCard: { height: "100%" }, // Make cards in a row equal height (may need tweaking)
-  categoryIcon: {
-    alignSelf: "center",
-    marginBottom: 12,
-    backgroundColor: "white",
-  },
-  categoryTitle: { fontWeight: "bold", marginBottom: 4, textAlign: "center" },
-  categoryDescription: { marginBottom: 10, textAlign: "center", minHeight: 60 },
-  categoryMeta: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: "auto",
-    paddingTop: 10,
-  },
+
   horizontalList: { paddingVertical: 4 },
-  featuredCard: { width: 300, marginRight: 12 }, // Fixed width for horizontal scroll
+
   quizSectionCard: { backgroundColor: "#E9D5FF" }, // Purple-100 approx
   quizSectionTitle: { fontWeight: "bold", marginBottom: 4 },
   featuredQuizzesContainer: { marginTop: 16, gap: 12 },

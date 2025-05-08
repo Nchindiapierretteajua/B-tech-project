@@ -21,37 +21,9 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { useAppTheme } from "../_layout";
+import { registerSchema } from "@/lib/schemas";
 
-// --- Schema and Types ---
-const phoneRegex = /^(?:\+237)?[6-9]\d{8}$/;
-const registerSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    phoneNumber: z
-      .string()
-      .regex(phoneRegex, "Invalid Cameroon phone (e.g., 6XXXXXXXX)"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Please confirm your password"),
-    role: z.enum(["citizen", "service-provider"]),
-    organization: z.string().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  })
-  .refine(
-    (data) =>
-      !(
-        data.role === "service-provider" &&
-        (!data.organization || data.organization.trim().length < 2)
-      ),
-    {
-      message: "Organization name required (min 2 chars)",
-      path: ["organization"],
-    }
-  );
 type RegisterFormValues = z.infer<typeof registerSchema>;
-// --- ---
 
 export default function RegisterScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -74,11 +46,11 @@ export default function RegisterScreen() {
       password: "",
       confirmPassword: "",
       role: "citizen",
-      organization: "",
+      ministry: "",
     },
   });
 
-  const selectedRole = watch("role"); // Watch role to conditionally show organization
+  const selectedRole = watch("role"); // Watch role to conditionally show ministry
 
   const onSubmit = async (data: RegisterFormValues) => {
     dispatch(loginStart());
@@ -100,19 +72,17 @@ export default function RegisterScreen() {
         name: data.name,
         phoneNumber: formattedPhone,
         role: data.role,
-        organization:
-          data.role === "service-provider" ? data.organization : undefined,
+        ministry: data.role === "service-provider" ? data.ministry : undefined,
         favorites: [],
       };
       dispatch(loginSuccess(mockUserData));
 
-      // Redirect using Expo Router
+      // Redirect accordingly
       if (data.role === "citizen") {
         router.replace("/");
       } else {
         router.replace("/(pubcam)/service-provider/dashboard"); // Go to provider dashboard
       }
-      // --- End Simulation ---
     } catch (err: any) {
       console.error("Registration failed:", err);
       dispatch(
@@ -125,9 +95,9 @@ export default function RegisterScreen() {
     <SafeAreaView
       style={[styles.safeArea, { backgroundColor: colors.background }]}
     >
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{ title: "Create Account", headerBackTitle: "Back" }}
-      />
+      /> */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
           <Text
@@ -279,28 +249,28 @@ export default function RegisterScreen() {
             )}
           />
 
-          {/* Organization (Conditional) */}
+          {/* Ministry (Conditional) */}
           {selectedRole === "service-provider" && (
             <>
               <Controller
                 control={control}
-                name="organization"
+                name="ministry"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    label="Organization Name"
+                    label="Ministry Name"
                     mode="outlined"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    error={!!errors.organization}
+                    error={!!errors.ministry}
                     style={styles.input}
                     left={<TextInput.Icon icon="domain" />}
                   />
                 )}
               />
-              {errors.organization && (
-                <HelperText type="error" visible={!!errors.organization}>
-                  {errors.organization.message}
+              {errors.ministry && (
+                <HelperText type="error" visible={!!errors.ministry}>
+                  {errors.ministry.message}
                 </HelperText>
               )}
             </>

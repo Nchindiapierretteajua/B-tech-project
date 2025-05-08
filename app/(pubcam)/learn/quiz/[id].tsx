@@ -17,71 +17,7 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { useAppTheme } from "@/app/_layout";
-
-// --- Mock Quiz Data (Replace with actual fetch/selector logic) ---
-const MOCK_QUIZZES_DB: { [key: string]: any } = {
-  "national-id": {
-    id: "national-id",
-    title: "National ID Card Quiz",
-    description: "Test your knowledge...",
-    points: 100,
-    passingScore: 70,
-    badge: {
-      id: "id-master",
-      name: "ID Master",
-      icon: "🏆",
-      description: "Passed the National ID Card quiz...",
-    },
-    questions: [
-      {
-        question: "What is the application fee...?",
-        options: ["CFA 1,500", "CFA 2,800", "CFA 5,000", "CFA 10,000"],
-        correctAnswer: 1,
-        explanation: "The fee is CFA 2,800.",
-      },
-      {
-        question: "Which document is NOT required...?",
-        options: [
-          "Birth certificate",
-          "Certificate of nationality",
-          "Passport",
-          "Proof of residence",
-        ],
-        correctAnswer: 2,
-        explanation: "A passport is not required...",
-      },
-      {
-        question: "How many photos are needed...?",
-        options: ["2 photos", "3 photos", "4 photos", "5 photos"],
-        correctAnswer: 2,
-        explanation: "You need 4 photos...",
-      },
-      {
-        question: "Where can you apply...?",
-        options: [
-          "Only central office...",
-          "Only municipal offices",
-          "Local police stations or ID centers",
-          "Only embassies...",
-        ],
-        correctAnswer: 2,
-        explanation: "Apply at local police stations or ID centers.",
-      },
-      {
-        question: "How long to receive ID...?",
-        options: ["1-2 weeks", "1-3 months", "6-12 months", "2-3 years"],
-        correctAnswer: 1,
-        explanation: "Typically 1-3 months.",
-      },
-    ],
-  },
-  "citizenship-rights": {
-    /* ... more quiz data ... */
-  },
-  "documentation-procedures": {
-    /* ... more quiz data ... */
-  },
-};
+import { MOCK_QUIZZES_DB } from "@/lib/mock-data";
 
 const fetchQuizById = async (id: string): Promise<any | null> => {
   console.log("Fetching quiz:", id); // Simulate fetch
@@ -116,11 +52,11 @@ export default function QuizScreen() {
   const [score, setScore] = useState(0);
 
   // --- Auth Check ---
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.replace("/(auth)");
-    }
-  }, [isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (isAuthenticated === false) {
+  //     router.replace("/(auth)");
+  //   }
+  // }, [isAuthenticated, router]);
 
   // --- Quiz Fetch ---
   useEffect(() => {
@@ -137,11 +73,11 @@ export default function QuizScreen() {
       setScore(0);
       setIsLoading(false);
     };
-    if (isAuthenticated && quizId) {
-      loadQuiz();
-    } else if (!isAuthenticated) {
-      setIsLoading(false);
-    }
+    // if (isAuthenticated && quizId) {
+    loadQuiz();
+    // } else if (!isAuthenticated) {
+    //   setIsLoading(false);
+    // }
   }, [quizId, isAuthenticated]);
 
   // --- Handlers ---
@@ -193,12 +129,12 @@ export default function QuizScreen() {
   const navigateToLearn = () => router.push("/learn");
 
   // --- Render Logic ---
-  if (!isAuthenticated)
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator />
-      </View>
-    );
+  // if (!isAuthenticated)
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   );
   if (isLoading)
     return (
       <View style={styles.centered}>

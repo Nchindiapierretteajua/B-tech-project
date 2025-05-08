@@ -49,7 +49,8 @@ export function ActionCard({
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1, // Allow cards to take space in grid/row
+    // flex: 1, // Allow cards to take space in grid/row
+    width: "100%",
   },
   title: {
     fontWeight: "bold",

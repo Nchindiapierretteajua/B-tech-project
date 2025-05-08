@@ -17,6 +17,7 @@ const MAPPING = {
   "graduationcap.fill": "book",
   "person.3.fill": "person-3",
   "chart.bar.fill": "bar-chart",
+  "list.dash": "list",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

@@ -21,18 +21,10 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { useAppTheme } from "../_layout";
+import { loginSchema } from "@/lib/schemas";
 
-// --- Schema and Types ---
-const phoneRegex = /^(?:\+237)?[6-9]\d{8}$/;
-const loginSchema = z.object({
-  phoneNumber: z
-    .string()
-    .regex(phoneRegex, "Invalid Cameroon phone (e.g., 6XXXXXXXX)"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["citizen", "service-provider"]),
-});
 type LoginFormValues = z.infer<typeof loginSchema>;
-// --- ---
+``;
 
 export default function LoginScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -66,7 +58,9 @@ export default function LoginScreen() {
         const mockUserData = {
           id: `user-${Math.random().toString(36).substring(7)}`,
           name:
-            data.role === "citizen" ? "John Nkongho" : "Mock Service Provider",
+            data.role === "citizen"
+              ? "Berthold Draxler"
+              : "Mock Service Provider",
           phoneNumber: formattedPhone,
           role: data.role,
           organization:
@@ -99,7 +93,7 @@ export default function LoginScreen() {
     <SafeAreaView
       style={[styles.safeArea, { backgroundColor: colors.background }]}
     >
-      <Stack.Screen options={{ title: "Login", headerBackTitle: "Back" }} />
+      {/* <Stack.Screen options={{ title: "Login", headerBackTitle: "Back" }} /> */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
           <Text

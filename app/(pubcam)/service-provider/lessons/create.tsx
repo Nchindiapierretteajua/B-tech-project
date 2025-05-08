@@ -21,31 +21,9 @@ import { LessonBasicInfoForm } from "@/components/provider/LessonBasicInfoForm";
 import { LessonBadgeForm } from "@/components/provider/LessonBadgeForm";
 import { LessonStepsForm } from "@/components/provider/LessonStepsForm";
 import { FormActions } from "@/components/provider/FormActions";
+import { lessonSchema } from "@/lib/schemas";
 
-// --- Validation Schema ---
-const lessonSchema = z.object({
-  title: z.string().min(3, "Title required (min 3 chars)"),
-  description: z.string().min(20, "Description required (min 20 chars)"),
-  category: z.string().min(1, "Category is required"),
-  difficulty: z.string().min(1, "Difficulty is required"),
-  duration: z.string().min(1, "Duration is required"),
-  points: z.number().min(1, "Min 1 point").max(1000, "Max 1000 points"),
-  badge: z.object({
-    name: z.string().min(2, "Badge name required (min 2 chars)"),
-    icon: z.string().min(1, "Badge icon required"),
-    description: z.string().min(5, "Badge description required (min 5 chars)"),
-  }),
-  steps: z
-    .array(
-      z.object({
-        title: z.string().min(3, "Step title required (min 3 chars)"),
-        content: z.string().min(20, "Step content required (min 20 chars)"),
-      })
-    )
-    .min(1, "At least one step is required"),
-});
 type LessonFormValues = z.infer<typeof lessonSchema>;
-// --- End Schema ---
 
 export default function CreateLessonScreen() {
   const router = useRouter();
@@ -57,15 +35,15 @@ export default function CreateLessonScreen() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  // --- Auth Check ---
-  useEffect(() => {
-    if (
-      isAuthenticated === false ||
-      (isAuthenticated && user?.role !== "service-provider")
-    ) {
-      router.replace("/(auth)");
-    }
-  }, [isAuthenticated, user, router]);
+  // // --- Auth Check ---
+  // useEffect(() => {
+  //   if (
+  //     isAuthenticated === false ||
+  //     (isAuthenticated && user?.role !== "service-provider")
+  //   ) {
+  //     router.replace("/(auth)");
+  //   }
+  // }, [isAuthenticated, user, router]);
 
   // --- React Hook Form Setup ---
   const {
@@ -114,14 +92,14 @@ export default function CreateLessonScreen() {
     }
   };
 
-  // --- Render ---
-  if (!isAuthenticated || user?.role !== "service-provider") {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={colors.primary} />
-      </View>
-    );
-  }
+  // // --- Render ---
+  // if (!isAuthenticated || user?.role !== "service-provider") {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator color={colors.primary} />
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.safeArea}>

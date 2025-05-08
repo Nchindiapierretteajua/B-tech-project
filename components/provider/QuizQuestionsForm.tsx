@@ -8,7 +8,7 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { Button, Text, Card, IconButton, HelperText } from "react-native-paper";
-import { QuizQuestionEditor } from "@/components/provider/QuizQuestionEditor";
+import { QuizQuestionEditor } from "./QuizQuestionEditor";
 import { useAppTheme } from "@/app/_layout"; // Corrected import path
 
 interface QuizQuestionsFormProps {
@@ -19,7 +19,7 @@ interface QuizQuestionsFormProps {
   setValue: UseFormSetValue<any>;
 }
 
-export default function QuizQuestionsForm({
+export function QuizQuestionsForm({
   control,
   errors,
   fieldArray,
@@ -63,7 +63,7 @@ export default function QuizQuestionsForm({
               style={styles.tabButton}
               compact
             >
-              <Text>Q{index + 1}</Text>
+              Q{index + 1}
             </Button>
           ))}
           <Button
@@ -73,7 +73,7 @@ export default function QuizQuestionsForm({
             style={styles.tabButton}
             compact
           >
-            <Text>Add Question</Text>
+            Add Question
           </Button>
         </View>
       </ScrollView>

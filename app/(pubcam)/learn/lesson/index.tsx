@@ -15,89 +15,12 @@ import {
   Appbar,
 } from "react-native-paper";
 import { router } from "expo-router";
-
-// --- Mock Lesson Data (Use same source as LessonScreen or fetch) ---
-const MOCK_ALL_LESSONS = [
-  {
-    id: "national-id",
-    title: "How to Apply for a National ID Card",
-    category: "documentation",
-    categoryName: "Documentation & ID",
-    difficulty: "Beginner",
-    duration: "15 min",
-    description: "Learn the step-by-step process...",
-  },
-  {
-    id: "tax-registration",
-    title: "Tax Registration Process",
-    category: "taxes",
-    categoryName: "Taxes & Finance",
-    difficulty: "Intermediate",
-    duration: "20 min",
-    description: "Understand how to register for taxes...",
-  },
-  {
-    id: "voting-rights",
-    title: "Understanding Your Voting Rights",
-    category: "citizenship",
-    categoryName: "Citizenship & Rights",
-    difficulty: "Beginner",
-    duration: "10 min",
-    description: "Learn about your voting rights...",
-  },
-  {
-    id: "business-registration",
-    title: "How to Register a Business",
-    category: "financial",
-    categoryName: "Taxes & Finance",
-    difficulty: "Advanced",
-    duration: "30 min",
-    description: "A comprehensive guide to registering...",
-  },
-  {
-    id: "healthcare-system",
-    title: "Navigating the Healthcare System",
-    category: "health",
-    categoryName: "Healthcare System",
-    difficulty: "Intermediate",
-    duration: "25 min",
-    description: "Learn how to access healthcare...",
-  },
-  // Add more from the original example...
-  {
-    id: "education-scholarships",
-    title: "Applying for Government Scholarships",
-    category: "education",
-    categoryName: "Education System",
-    difficulty: "Intermediate",
-    duration: "20 min",
-    description: "A guide to finding and applying...",
-  },
-  {
-    id: "passport-application",
-    title: "Passport Application Process",
-    category: "documentation",
-    categoryName: "Documentation & ID",
-    difficulty: "Beginner",
-    duration: "15 min",
-    description: "Step-by-step guide to applying...",
-  },
-  {
-    id: "legal-aid",
-    title: "Accessing Legal Aid Services",
-    category: "legal",
-    categoryName: "Legal System",
-    difficulty: "Intermediate",
-    duration: "20 min",
-    description: "Learn how to access legal aid...",
-  },
-];
+import { MOCK_ALL_LESSONS } from "@/lib/mock-data";
 
 const fetchAllLessons = async (): Promise<any[]> => {
   await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate delay
   return MOCK_ALL_LESSONS;
 };
-// --- End Mock Data ---
 
 export default function AllLessonsScreen() {
   const { user, isAuthenticated } = useSelector(
@@ -114,11 +37,11 @@ export default function AllLessonsScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
 
   // --- Auth Check ---
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/(auth)"); // Redirect if not logged in
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     router.push("/(auth)"); // Redirect if not logged in
+  //   }
+  // }, [isAuthenticated]);
 
   // --- Fetch Lessons ---
   useEffect(() => {
@@ -128,9 +51,9 @@ export default function AllLessonsScreen() {
       setAllLessons(data);
       setIsLoading(false);
     };
-    if (isAuthenticated) {
-      loadLessons();
-    }
+    // if (isAuthenticated) {
+    loadLessons();
+    // }
   }, [isAuthenticated]);
 
   // --- Filtering Logic ---
@@ -186,17 +109,17 @@ export default function AllLessonsScreen() {
     <LessonCard lesson={item} />
   );
 
-  // --- Render Logic ---
-  if (!isAuthenticated) {
-    return (
-      // Placeholder while redirecting
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.centered}>
-          <ActivityIndicator />
-        </View>
-      </SafeAreaView>
-    );
-  }
+  // // --- Render Logic ---
+  // if (!isAuthenticated) {
+  //   return (
+  //     // Placeholder while redirecting
+  //     <SafeAreaView style={styles.safeArea}>
+  //       <View style={styles.centered}>
+  //         <ActivityIndicator />
+  //       </View>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.safeArea}>

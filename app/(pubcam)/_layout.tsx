@@ -7,9 +7,12 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <Tabs
@@ -27,6 +30,7 @@ export default function TabLayout() {
         }),
       }}
     >
+      {/* {user?.role === "service-provider" && ( */}
       <Tabs.Screen
         name="service-provider"
         options={{
@@ -36,6 +40,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* // )} */}
       <Tabs.Screen
         name="index"
         options={{
@@ -50,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: "Services",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="suitcase.fill" color={color} />
+            <IconSymbol size={28} name="list.dash" color={color} />
           ),
         }}
       />

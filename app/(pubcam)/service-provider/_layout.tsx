@@ -24,7 +24,7 @@ export default function ProviderDrawerLayout() {
         }}
       >
         <Drawer.Screen
-          name="dashboard" // Path: app/(provider)/dashboard/index.tsx
+          name="dashboard/index" // Path: app/(provider)/dashboard/index.tsx
           options={{
             drawerLabel: "Dashboard Home",
             title: "Provider Dashboard",
@@ -36,8 +36,8 @@ export default function ProviderDrawerLayout() {
         <Drawer.Screen
           name="services" // Path: app/(provider)/dashboard/my-services.tsx
           options={{
-            drawerLabel: "My Services",
-            title: "Manage Services",
+            drawerLabel: "Create Service",
+            title: "Create Services",
             drawerIcon: ({ color, size }) => (
               <Ionicons name="briefcase-outline" size={size} color={color} />
             ),
@@ -64,7 +64,7 @@ export default function ProviderDrawerLayout() {
           }}
         />
         {/* Add more screens relevant to service providers */}
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="profile/index" // Path: app/(provider)/profile/index.tsx - reuse profile screen if needed
           options={{
             drawerLabel: "My Profile",
@@ -77,7 +77,7 @@ export default function ProviderDrawerLayout() {
               />
             ),
           }}
-        />
+        /> */}
       </Drawer>
     </GestureHandlerRootView>
   );

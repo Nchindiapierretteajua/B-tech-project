@@ -3,44 +3,20 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter, Stack } from "expo-router";
-import type { RootState, AppDispatch } from "@/lib/store"; // Adjust path
+import type { RootState, AppDispatch } from "@/lib/store";
 import { Text, Button, Card, ActivityIndicator } from "react-native-paper";
 import { useAppTheme } from "@/app/_layout";
 
 // Import reusable components
-import { StatCard } from "@/components/provider/StatCard"; // Adjust path
-import { ActionCard } from "@/components/provider/ActionCard"; // Adjust path
-import { ServicesTable } from "@/components/provider/ServicesTable"; // Adjust path
-// Assuming Service type is defined
-type Service = {
-  id: string;
-  name: string;
-  category: string;
-  area?: string;
-  status?: "Active" | "Inactive" | "Draft";
-};
+import { StatCard } from "@/components/provider/StatCard";
+import { ActionCard } from "@/components/provider/ActionCard";
+import { ServicesTable } from "@/components/provider/ServicesTable";
+import type { Service } from "@/lib/types";
+import { mockServices } from "@/lib/mock-data";
 
-// --- Mock Data ---
-const MOCK_PROVIDER_SERVICES: Service[] = [
-  {
-    id: "svc1",
-    name: "ID Card Application Point",
-    category: "documentation",
-    area: "Buea Town",
-    status: "Active",
-  },
-  {
-    id: "svc2",
-    name: "Tax Help Desk",
-    category: "taxes",
-    area: "Molyko",
-    status: "Active",
-  },
-  // Add more mock services...
-];
 const fetchProviderServices = async (): Promise<Service[]> => {
   await new Promise((r) => setTimeout(r, 500));
-  return MOCK_PROVIDER_SERVICES;
+  return mockServices;
 };
 const deleteServiceAPI = async (id: string): Promise<void> => {
   await new Promise((r) => setTimeout(r, 800));
@@ -61,28 +37,28 @@ export default function ProviderDashboardScreen() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null); // Track deleting service ID
 
   // --- Auth Check & Data Fetch ---
-  // useEffect(() => {
-  //   if (
-  //     isAuthenticated === false ||
-  //     (isAuthenticated && user?.role !== "service-provider")
-  //   ) {
-  //     router.replace("/(auth)"); // Redirect if not correct user type
-  //   } else if (isAuthenticated) {
-  //     const loadData = async () => {
-  //       setIsLoading(true);
-  //       const servicesData = await fetchProviderServices(); // Fetch provider's services
-  //       setProviderServices(servicesData);
-  //       setIsLoading(false);
-  //     };
-  //     loadData();
-  //   }
-  // }, [isAuthenticated, user, router]);
+  useEffect(() => {
+    // if (
+    //   isAuthenticated === false ||
+    //   (isAuthenticated && user?.role !== "service-provider")
+    // ) {
+    //   router.replace("/(auth)"); // Redirect if not correct user type
+    // } else if (isAuthenticated) {
+    const loadData = async () => {
+      setIsLoading(true);
+      const servicesData = await fetchProviderServices(); // Fetch provider's services
+      setProviderServices(servicesData);
+      setIsLoading(false);
+    };
+    loadData();
+    // }
+  }, [isAuthenticated, user, router]);
 
   // --- Handlers ---
   const handleAddService = () =>
-    router.push("/(pubcam)/service-provider/services/create"); // Adjust path if needed
-  const handleManageServices = () =>
-    router.push("/(pubcam)/service-provider/services/index"); // Navigate within drawer
+    router.push("/(pubcam)/service-provider/services");
+  // const handleManageServices = () =>
+  //   router.push("/(pubcam)/service-provider/services/index"); // Navigate within drawer
   const handleManageLessons = () =>
     router.push("/(pubcam)/service-provider/lessons");
   const handleManageQuizzes = () =>
@@ -124,8 +100,15 @@ export default function ProviderDashboardScreen() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header Section */}
         <View style={styles.headerSection}>
-          <Text variant="headlineMedium">Welcome, {user.name}!</Text>
-          <Button mode="contained" icon="plus" onPress={handleAddService}>
+          <Text variant="headlineMedium" style={{ flex: 1 }}>
+            Welcome, {user?.name}!
+          </Text>
+          <Button
+            style={{}}
+            mode="contained"
+            icon="plus"
+            onPress={handleAddService}
+          >
             Add New Service
           </Button>
         </View>
@@ -159,16 +142,36 @@ export default function ProviderDashboardScreen() {
           />
         </View>
 
+        {/* Services Table Section */}
+        <Card style={styles.tableCard}>
+          <Card.Title title="My Services Overview" titleVariant="titleLarge" />
+          <Card.Content>
+            {isLoading ? (
+              <ActivityIndicator
+                animating={true}
+                color={colors.primary}
+                style={{ marginVertical: 20 }}
+              />
+            ) : (
+              <ServicesTable
+                services={providerServices}
+                onDelete={handleDeleteService}
+                isDeleting={isDeleting}
+              />
+            )}
+          </Card.Content>
+        </Card>
+
         {/* Action Cards Grid */}
         <View style={styles.actionGridContainer}>
-          <ActionCard
+          {/* <ActionCard
             title="Manage Services"
             description="Create, edit, and manage your public services."
             icon="briefcase-edit-outline"
             buttonText="View Services"
-            onPress={handleManageServices}
+            // onPress={handleManageServices}
             iconBackgroundColor={colors.primaryContainer}
-          />
+          /> */}
           <ActionCard
             title="Manage Lessons"
             description="Create and manage educational lessons for citizens."
@@ -195,26 +198,6 @@ export default function ProviderDashboardScreen() {
             iconBackgroundColor={colors.surfaceVariant}
           />
         </View>
-
-        {/* Services Table Section */}
-        <Card style={styles.tableCard}>
-          <Card.Title title="My Services Overview" titleVariant="titleLarge" />
-          <Card.Content>
-            {isLoading ? (
-              <ActivityIndicator
-                animating={true}
-                color={colors.primary}
-                style={{ marginVertical: 20 }}
-              />
-            ) : (
-              <ServicesTable
-                services={providerServices}
-                onDelete={handleDeleteService}
-                isDeleting={isDeleting}
-              />
-            )}
-          </Card.Content>
-        </Card>
       </ScrollView>
     </SafeAreaView>
   );
@@ -228,6 +211,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: 5,
   },
   gridContainer: {
     flexDirection: "row",
