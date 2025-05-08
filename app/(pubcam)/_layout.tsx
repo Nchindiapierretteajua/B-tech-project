@@ -54,9 +54,10 @@ export default function TabLayout() {
           ),
           headerShown: true,
           headerTitleStyle: {
-            fontSize: fontSizes.medium,
+            fontSize: fontSizes.large,
             fontWeight: "bold",
           },
+          headerTitleAlign: "center",
         }}
       />
       <Tabs.Screen
@@ -84,6 +85,12 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="person.3.fill" color={color} />
           ),
+          headerShown: true,
+          headerTitleStyle: {
+            fontSize: fontSizes.large,
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "center",
         }}
       />
     </Tabs>

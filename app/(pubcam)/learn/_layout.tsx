@@ -12,7 +12,7 @@ const LearnLayout = () => {
         name="index"
         options={{
           headerTitleStyle: {
-            fontSize: fontSizes.medium,
+            fontSize: fontSizes.large,
             fontWeight: "bold",
           },
           headerTitleAlign: "center",

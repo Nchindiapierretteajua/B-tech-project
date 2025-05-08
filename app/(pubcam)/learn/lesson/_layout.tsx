@@ -6,7 +6,7 @@ const LessonLayout = () => {
     <Stack
       screenOptions={{
         headerTitleStyle: {
-          fontSize: fontSizes.medium,
+          fontSize: fontSizes.large,
           fontWeight: "bold",
         },
         headerTitleAlign: "center",

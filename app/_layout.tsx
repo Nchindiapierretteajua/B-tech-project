@@ -54,8 +54,8 @@ export default function RootLayout() {
         <PaperProvider theme={paperThemeLight}>
           {/* <LanguageProvider> */}
           <Stack>
-            <Stack.Screen name="(pubcam)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(pubcam)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />

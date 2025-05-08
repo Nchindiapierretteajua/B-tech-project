@@ -43,6 +43,7 @@ export default function ServiceDetailScreen() {
   return (
     <SafeAreaView style={styles.flex1}>
       <Stack.Screen options={{ title: "Service Details" }} />
+      {/* FIXME: Hardcode back button from this screen to the service list screen */}
       {/* TODO: Fetch service details here and pass down to components here */}
       <ScrollView
         style={[styles.container, { backgroundColor: background }]}
