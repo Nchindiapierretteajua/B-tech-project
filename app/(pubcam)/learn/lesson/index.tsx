@@ -123,12 +123,6 @@ export default function AllLessonsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Optional: Screen specific Appbar */}
-      {/* <Appbar.Header>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Appbar.Content title="Learning Center" />
-            </Appbar.Header> */}
-
       <View style={styles.container}>
         {/* Screen Header */}
         <Card style={styles.headerCard} mode="contained">

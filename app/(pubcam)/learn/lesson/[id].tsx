@@ -1,3 +1,4 @@
+// TODO: Remove mock data and modify to accomodate fetch from backend
 import React, { useState, useEffect, useRef } from "react";
 import {
   ScrollView,
@@ -233,11 +234,9 @@ export default function LessonScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Configure Header using Expo Router's Stack.Screen */}
       <Stack.Screen
         options={{ title: lesson.title, headerTitleAlign: "center" }}
       />
-      {/* Note: The main <Header/> component is likely in _layout.tsx */}
 
       <ScrollView
         ref={scrollViewRef}

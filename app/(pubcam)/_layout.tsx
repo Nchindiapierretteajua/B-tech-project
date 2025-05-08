@@ -9,6 +9,7 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import { fontSizes } from "@/constants/fontSizes";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -30,16 +31,19 @@ export default function TabLayout() {
         }),
       }}
     >
-      {/* {user?.role === "service-provider" && ( */}
-      <Tabs.Screen
-        name="service-provider"
-        options={{
-          title: "Dashboard",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chart.bar.fill" color={color} />
-          ),
-        }}
-      />
+      {user?.role === "service-provider" ? (
+        <Tabs.Screen
+          name="service-provider"
+          options={{
+            title: "Dashboard",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="chart.bar.fill" color={color} />
+            ),
+          }}
+        />
+      ) : (
+        <Tabs.Screen name="service-provider" options={{ href: null }} />
+      )}
       {/* // )} */}
       <Tabs.Screen
         name="index"
@@ -48,6 +52,11 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
           ),
+          headerShown: true,
+          headerTitleStyle: {
+            fontSize: fontSizes.medium,
+            fontWeight: "bold",
+          },
         }}
       />
       <Tabs.Screen

@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { Text } from "react-native-paper";
 import { ServiceDetails } from "@/components/ServiceDetails";
 import { StepByStepGuide } from "@/components/StepByStepGuide";
@@ -42,6 +42,8 @@ export default function ServiceDetailScreen() {
 
   return (
     <SafeAreaView style={styles.flex1}>
+      <Stack.Screen options={{ title: "Service Details" }} />
+      {/* TODO: Fetch service details here and pass down to components here */}
       <ScrollView
         style={[styles.container, { backgroundColor: background }]}
         contentContainerStyle={styles.contentContainer}

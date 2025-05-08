@@ -1,3 +1,4 @@
+import { fontSizes } from "@/constants/fontSizes";
 import { Stack } from "expo-router";
 import { View, Text } from "react-native";
 const LearnLayout = () => {
@@ -10,7 +11,13 @@ const LearnLayout = () => {
       <Stack.Screen
         name="index"
         options={{
+          headerTitleStyle: {
+            fontSize: fontSizes.medium,
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "center",
           title: "Learn",
+          headerShown: true,
         }}
       />
       <Stack.Screen
