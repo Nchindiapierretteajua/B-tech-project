@@ -18,6 +18,7 @@ const MAPPING = {
   "person.3.fill": "person-3",
   "chart.bar.fill": "bar-chart",
   "list.dash": "list",
+  "megaphone.fill": "campaign",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

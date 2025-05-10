@@ -63,6 +63,16 @@ export default function ProviderDrawerLayout() {
             ),
           }}
         />
+        <Drawer.Screen
+          name="announcements/create"
+          options={{
+            drawerLabel: "New Announcement",
+            title: "Create Announcement",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="megaphone-outline" size={size} color={color} />
+            ),
+          }}
+        />
         {/* Add more screens relevant to service providers */}
         {/* <Drawer.Screen
           name="profile/index" // Path: app/(provider)/profile/index.tsx - reuse profile screen if needed

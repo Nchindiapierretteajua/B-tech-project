@@ -72,9 +72,19 @@ export default function TabLayout() {
       <Tabs.Screen
         name="learn"
         options={{
-          title: "Learn",
+          // title: "Learn",
+          // tabBarIcon: ({ color }) => (
+          //   <IconSymbol size={28} name="graduationcap.fill" color={color} />
+          // ),
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="announcements"
+        options={{
+          title: "Announcements",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="graduationcap.fill" color={color} />
+            <IconSymbol size={28} name="megaphone.fill" color={color} />
           ),
         }}
       />
